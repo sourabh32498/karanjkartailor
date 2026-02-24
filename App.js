@@ -137,24 +137,16 @@ function AppLayout({ onLogout, username, theme, onToggleTheme }) {
       <div className="container-fluid py-3 py-lg-4">
         <header className="mb-3 card section-card shadow-sm">
           <div className="card-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 py-3">
-            <div className="header-intro">
+            <div>
               <button
                 type="button"
-                className={`btn btn-outline-primary btn-sm sidebar-toggle d-lg-none mb-2 ${sidebarOpen ? "open" : ""}`}
-                onClick={() => setSidebarOpen((prev) => !prev)}
-                aria-label={sidebarOpen ? "Close menu" : "Open menu"}
-                aria-expanded={sidebarOpen}
+                className="btn btn-outline-primary btn-sm sidebar-toggle d-lg-none mb-2"
+                onClick={() => setSidebarOpen(true)}
               >
-                <span className="sidebar-toggle-lines" aria-hidden="true">
-                  <span className="line" />
-                  <span className="line" />
-                  <span className="line" />
-                </span>
+                Menu
               </button>
               <h2 className="app-title mb-1">Karanjkar Tailors</h2>
-              <p className="text-muted mb-0">
-                Admin Dashboard - {pageTitle}
-              </p>
+              <p className="text-muted mb-0">Admin Dashboard - {pageTitle}</p>
             </div>
             <div className="d-flex align-items-center gap-2 flex-wrap">
               <button type="button" className="btn btn-outline-secondary btn-sm" onClick={onToggleTheme}>
@@ -176,13 +168,8 @@ function AppLayout({ onLogout, username, theme, onToggleTheme }) {
                 <small className="text-muted">Project modules</small>
               </div>
               <nav className="nav nav-pills flex-column gap-2 p-3">
-                {NAV_ITEMS.map((item, index) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={(args) => `${linkClass(args)} nav-reveal`}
-                    style={{ "--nav-i": index }}
-                  >
+                {NAV_ITEMS.map((item) => (
+                  <NavLink key={item.to} to={item.to} className={linkClass}>
                     <span className="fw-semibold">{item.label}</span>
                     <span className="small opacity-75">Manage {item.shortLabel}</span>
                   </NavLink>
@@ -193,7 +180,7 @@ function AppLayout({ onLogout, username, theme, onToggleTheme }) {
 
           <main className="admin-main">
             <Routes>
-              <Route path="/dashboard" element={<Dashboard theme={theme} />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/billing" element={<Billing />} />
               <Route path="/customers" element={<CustomersPage />} />
               <Route path="/orders" element={<Orders />} />
@@ -258,12 +245,6 @@ function App() {
     alert("Logout successful");
   };
   const onToggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-
-  useEffect(() => {
-    const handleUnauthorized = () => setAuthState(null);
-    window.addEventListener("kt_unauthorized", handleUnauthorized);
-    return () => window.removeEventListener("kt_unauthorized", handleUnauthorized);
-  }, []);
 
   return (
     <Routes>
